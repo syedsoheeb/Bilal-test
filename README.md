@@ -1,36 +1,18 @@
-# Flutter Gradle Fix
+# AppCircle Script Fix for Flutter
 
-This package contains fixes for the Gradle build issue in your Flutter project.
+This script is designed to fix the Flutter Android build on AppCircle.
 
-## The Error
+## How to Use
 
-```
-Could not get unknown property 'flutterSdkPath' for settings 'android' of type org.gradle.initialization.DefaultSettings.
-```
+1. Add a "Custom Script" step in AppCircle before the "Flutter Build for Android" step
+2. Copy and paste the content of `create_local_properties.sh` into the script field
+3. Save and run the build
 
-## How to Fix
+## What This Script Does
 
-1. Replace your `android/settings.gradle` file with the one provided in this package
-2. Create or update your `android/local.properties` file to point to your Flutter SDK:
+1. Creates the Android directory if it doesn't exist
+2. Creates a proper local.properties file with the correct Flutter SDK path
+3. Fixes settings.gradle to work with Flutter
+4. Creates build.gradle files if they don't exist
 
-```
-flutter.sdk=/path/to/your/flutter
-sdk.dir=/path/to/your/android/sdk
-```
-
-For AppCircle, you might need to create this file during the build process with a custom script step.
-
-## For AppCircle
-
-Add a "Custom Script" step before "Flutter Build for Android" with this content:
-
-```bash
-#!/bin/bash
-echo "Creating local.properties file..."
-FLUTTER_PATH=`which flutter | xargs dirname | xargs dirname`
-echo "flutter.sdk=$FLUTTER_PATH" > android/local.properties
-echo "sdk.dir=/Users/appcircle/android-sdk-linux" >> android/local.properties
-cat android/local.properties
-```
-
-This script will automatically detect the Flutter SDK path and add it to the local.properties file.
+This script is designed to be verbose and print diagnostic information to help troubleshoot build issues.
