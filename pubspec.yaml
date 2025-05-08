@@ -1,0 +1,63 @@
+name: bilal_muezzin
+description: Bilal The Muezzin - Islamic Prayer App with smart speaker integration
+
+# Set version
+version: 1.0.0+1
+
+# Support Dart 3.0 and Flutter for stable environment
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State management
+  provider: ^6.0.5
+  
+  # UI
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.7
+  cached_network_image: ^3.3.0
+  intl: ^0.18.1
+  
+  # Utils and Network
+  http: ^1.1.0
+  shared_preferences: ^2.2.1
+  path_provider: ^2.1.1
+  # Notifications plugin removed to fix potential v1 embedding issues
+  # Will be re-added when actual notifications are implemented
+  url_launcher: ^6.1.14
+  
+  # Audio
+  # Note: Audio plugins removed to fix Android v1 embedding issue
+  # These will be re-added when actual audio implementation is needed
+  
+  # Google Cast integration 
+  # Using a simplified approach for casting
+  # For full functionality, use the Google Cast SDK in production builds
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.6
+
+# Flutter configuration
+flutter:
+  uses-material-design: true
+  
+  # Assets
+  assets:
+    - assets/images/
+    - assets/audio/
+    - assets/fonts/
+
+  # Fonts for Arabic text
+  fonts:
+    - family: ScheherazadeNew
+      fonts:
+        - asset: assets/fonts/ScheherazadeNew-Regular.ttf
+        - asset: assets/fonts/ScheherazadeNew-Bold.ttf
+          weight: 700
