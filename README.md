@@ -1,20 +1,36 @@
-# Flutter V2 Embedding Fix for Bilal The Muezzin
+# Flutter Gradle Fix
 
-This package contains files to fix the "Build failed due to use of deleted Android v1 embedding" error.
+This package contains fixes for the Gradle build issue in your Flutter project.
 
-## Instructions
+## The Error
 
-1. Replace your `android/app/src/main/java/com/bilalthemuezzin/app/MainActivity.kt` file with the one provided
-2. Replace your `android/app/build.gradle` file with the one provided
-3. Replace your `android/app/src/main/AndroidManifest.xml` file with the one provided
-4. Replace your `android/app/src/main/res/values/styles.xml` file with the one provided
-5. Replace your `android/build.gradle` and `android/settings.gradle` files with the ones provided
+```
+Could not get unknown property 'flutterSdkPath' for settings 'android' of type org.gradle.initialization.DefaultSettings.
+```
 
-These changes will update your Flutter app to use the V2 embedding, which is required for recent Flutter versions.
+## How to Fix
 
-## What's Changed
+1. Replace your `android/settings.gradle` file with the one provided in this package
+2. Create or update your `android/local.properties` file to point to your Flutter SDK:
 
-- Updated MainActivity to extend FlutterActivity (V2 embedding)
-- Added flutterEmbedding meta-data in AndroidManifest.xml
-- Updated Gradle configuration for V2 embedding
-- Updated theme configuration
+```
+flutter.sdk=/path/to/your/flutter
+sdk.dir=/path/to/your/android/sdk
+```
+
+For AppCircle, you might need to create this file during the build process with a custom script step.
+
+## For AppCircle
+
+Add a "Custom Script" step before "Flutter Build for Android" with this content:
+
+```bash
+#!/bin/bash
+echo "Creating local.properties file..."
+FLUTTER_PATH=`which flutter | xargs dirname | xargs dirname`
+echo "flutter.sdk=$FLUTTER_PATH" > android/local.properties
+echo "sdk.dir=/Users/appcircle/android-sdk-linux" >> android/local.properties
+cat android/local.properties
+```
+
+This script will automatically detect the Flutter SDK path and add it to the local.properties file.

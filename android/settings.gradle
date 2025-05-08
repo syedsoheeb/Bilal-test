@@ -1,24 +1,30 @@
-pluginManagement {
-    def flutterSdkPath = {
-        def properties = new Properties()
-        file("local.properties").withInputStream { properties.load(it) }
-        def flutterSdkPath = properties.getProperty("flutter.sdk")
-        assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
-        return flutterSdkPath
-    }
-    includeBuild("${flutterSdkPath.call()}/packages/flutter_tools/gradle")
+// This is a simple settings.gradle file that works with Flutter
+// Without any complex property or function references
 
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+include ':app'
 
-    plugins {
-        id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
-    }
+// Include the Flutter SDK and default plugins
+def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
+def plugins = new Properties()
+def pluginsFile = new File(flutterProjectRoot.toFile(), '.flutter-plugins')
+if (pluginsFile.exists()) {
+    pluginsFile.withReader('UTF-8') { reader -> plugins.load(reader) }
 }
 
-include ":app"
+plugins.each { name, path ->
+    def pluginDirectory = flutterProjectRoot.resolve(path).toFile()
+    include ":$name"
+    project(":$name").projectDir = pluginDirectory
+}
 
-apply from: "${flutterSdkPath.call()}/packages/flutter_tools/gradle/app_plugin_loader.gradle"
+def localPropertiesFile = new File(flutterProjectRoot.toFile(), "local.properties")
+def properties = new Properties()
+
+assert localPropertiesFile.exists(), "❌ Create a local.properties file with flutter.sdk=/path/to/flutter"
+localPropertiesFile.withReader("UTF-8") { reader -> properties.load(reader) }
+
+def flutterSdkPath = properties.getProperty("flutter.sdk")
+assert flutterSdkPath != null, "❌ flutter.sdk not set in local.properties"
+
+apply from: "$flutterSdkPath/packages/flutter_tools/gradle/app_plugin_loader.gradle"

@@ -1,0 +1,3 @@
+# This file should be created with your Flutter SDK path
+flutter.sdk=/path/to/your/flutter
+sdk.dir=/path/to/your/android/sdk
