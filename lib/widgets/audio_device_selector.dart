@@ -40,7 +40,7 @@ class AudioDeviceSelector extends StatelessWidget {
                       style: AppTextStyles.h3,
                     ),
                     IconButton(
-                      icon: const Icon(Icons.refresh),
+                      icon: Icon(Icons.refresh),
                       onPressed: () {
                         provider.loadDevices();
                       },
@@ -78,7 +78,7 @@ class AudioDeviceSelector extends StatelessWidget {
                     ? SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          icon: const Icon(Icons.music_note),
+                          icon: Icon(Icons.music_note),
                           label: const Text('Test Audio'),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: AppPadding.md),
@@ -89,7 +89,7 @@ class AudioDeviceSelector extends StatelessWidget {
                     : SizedBox(
                         width: double.infinity,
                         child: OutlinedButton.icon(
-                          icon: const Icon(Icons.speaker),
+                          icon: Icon(Icons.speaker),
                           label: const Text('Select a Device'),
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: AppPadding.md),
@@ -140,7 +140,7 @@ class AudioDeviceSelector extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(
+          Icon(
             Icons.check_circle,
             color: AppColors.success,
           ),
@@ -230,12 +230,12 @@ class AudioDeviceSelector extends StatelessWidget {
         ),
       ),
       trailing: isSelected
-          ? const Icon(
+          ? Icon(
               Icons.check_circle,
               color: AppColors.success,
             )
           : IconButton(
-              icon: const Icon(Icons.connect_without_contact),
+              icon: Icon(Icons.connect_without_contact),
               tooltip: 'Connect',
               onPressed: () => _connectToDevice(context, provider, device),
             ),
@@ -314,7 +314,7 @@ class AudioDeviceSelector extends StatelessWidget {
                 const SizedBox(height: AppPadding.md),
                 Center(
                   child: ElevatedButton.icon(
-                    icon: const Icon(Icons.refresh),
+                    icon: Icon(Icons.refresh),
                     label: const Text('Scan for Devices'),
                     onPressed: () {
                       provider.loadDevices();

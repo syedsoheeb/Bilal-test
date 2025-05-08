@@ -47,7 +47,7 @@ class DhikrService {
     ),
     DhikrEntry(
       arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ',
-      transliteration: 'Subhan-Allahi wa bihamdihi, 'adada khalqihi, wa rida nafsihi, wa zinata 'arshihi, wa midada kalimatihi',
+      transliteration: "Subhan-Allahi wa bihamdihi, 'adada khalqihi, wa rida nafsihi, wa zinata 'arshihi, wa midada kalimatihi',
       translation: 'Glory and praise is to Allah, as much as the number of His creation, as much as pleases Him, as much as the weight of His Throne, and as much as the ink of His words',
       reference: 'Muslim 4/2090',
       virtues: 'These words are heavy on the Scale and most beloved to Allah.',
@@ -79,7 +79,7 @@ class DhikrService {
     ),
     DhikrEntry(
       arabic: 'بِسْمِ اللهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الأَرْضِ وَلاَ فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ',
-      transliteration: 'Bismillahil-ladhi la yadurru ma'asmihi shay'un fil-ardi wa la fis-sama', wa huwas-sami'ul-'alim',
+      transliteration: "Bismillahil-ladhi la yadurru ma'asmihi shay'un fil-ardi wa la fis-sama', wa huwas-sami'ul-'alim',
       translation: 'In the Name of Allah, with Whose Name nothing can harm on earth or in heaven, and He is the All-Hearing, the All-Knowing',
       reference: 'Abu Dawud 4/323, At-Tirmidhi 5/465',
       virtues: 'Whoever recites this three times in the morning and evening will not be harmed by anything.',

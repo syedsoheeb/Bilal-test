@@ -415,7 +415,7 @@ class Schedule {
   
   // Common fields
   final String? deviceName;
-  final String? speakerGroupId; // Reference to speaker group
+  final String? speakerGroupId = null; // Reference to speaker group
   final bool? timeBased; // If true, uses time, otherwise uses prayer
   final String? time; // For time-based schedules
   final int? delayMinutes; // Delay after prayer time
