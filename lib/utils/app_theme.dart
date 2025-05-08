@@ -42,4 +42,20 @@ class AppTheme {
       fontFamily: 'Roboto',
     );
   }
+  
+  static ThemeData get darkTheme {
+    return ThemeData.dark().copyWith(
+      primaryColor: AppColors.primary,
+      colorScheme: const ColorScheme.dark(
+        primary: AppColors.primary,
+        secondary: AppColors.secondary,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+        ),
+      ),
+    );
+  }
 }

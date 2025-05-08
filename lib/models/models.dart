@@ -43,7 +43,7 @@ class AudioDevice {
   final String name;
   final String type;
   final bool isConnected;
-  final String? speakerGroupId = null; // Reference to speaker group
+  final String? speakerGroupId = null; // Initialize with null
   
   AudioDevice({
     required this.id,

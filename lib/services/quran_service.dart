@@ -1,176 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../models/models.dart';
 
-/// Service for Quran-related functionality
-class QuranService {
-  // List of favorite surah IDs
-  final List<int> _favoriteSurahs = [];
+class QuranService extends ChangeNotifier {
+  List<Map<String, dynamic>> _surahs = [];
+  List<QuranSelection> _favorites = [];
   
-  // Demo list of surahs (first 10 surahs)
-  final List<SurahInfo> _allSurahs = [
-    SurahInfo(
-      number: 1,
-      name: 'الفاتحة',
-      englishName: 'Al-Fatiha',
-      englishNameTranslation: 'The Opening',
-      numberOfAyahs: 7,
-      revelationType: 'Meccan',
-    ),
-    SurahInfo(
-      number: 2,
-      name: 'البقرة',
-      englishName: 'Al-Baqarah',
-      englishNameTranslation: 'The Cow',
-      numberOfAyahs: 286,
-      revelationType: 'Medinan',
-    ),
-    SurahInfo(
-      number: 3,
-      name: 'آل عمران',
-      englishName: 'Aal-Imran',
-      englishNameTranslation: 'The Family of Imran',
-      numberOfAyahs: 200,
-      revelationType: 'Medinan',
-    ),
-    SurahInfo(
-      number: 4,
-      name: 'النساء',
-      englishName: 'An-Nisa',
-      englishNameTranslation: 'The Women',
-      numberOfAyahs: 176,
-      revelationType: 'Medinan',
-    ),
-    SurahInfo(
-      number: 5,
-      name: 'المائدة',
-      englishName: 'Al-Ma\'idah',
-      englishNameTranslation: 'The Table Spread',
-      numberOfAyahs: 120,
-      revelationType: 'Medinan',
-    ),
-    SurahInfo(
-      number: 6,
-      name: 'الأنعام',
-      englishName: 'Al-An\'am',
-      englishNameTranslation: 'The Cattle',
-      numberOfAyahs: 165,
-      revelationType: 'Meccan',
-    ),
-    SurahInfo(
-      number: 7,
-      name: 'الأعراف',
-      englishName: 'Al-A\'raf',
-      englishNameTranslation: 'The Heights',
-      numberOfAyahs: 206,
-      revelationType: 'Meccan',
-    ),
-    SurahInfo(
-      number: 8,
-      name: 'الأنفال',
-      englishName: 'Al-Anfal',
-      englishNameTranslation: 'The Spoils of War',
-      numberOfAyahs: 75,
-      revelationType: 'Medinan',
-    ),
-    SurahInfo(
-      number: 9,
-      name: 'التوبة',
-      englishName: 'At-Tawbah',
-      englishNameTranslation: 'The Repentance',
-      numberOfAyahs: 129,
-      revelationType: 'Medinan',
-    ),
-    SurahInfo(
-      number: 10,
-      name: 'يونس',
-      englishName: 'Yunus',
-      englishNameTranslation: 'Jonah',
-      numberOfAyahs: 109,
-      revelationType: 'Meccan',
-    ),
-  ];
+  // Getters
+  List<Map<String, dynamic>> get surahs => _surahs;
+  List<QuranSelection> get favorites => _favorites;
   
-  // Available Quran reciters
-  final Map<String, String> _reciters = {
-    'mishari_rashid_alafasy': 'Mishary Rashid Alafasy',
-    'abdul_basit_murattal': 'Abdul Basit Abdus Samad',
-    'abdul_rahman_al_sudais': 'Abdul Rahman Al-Sudais',
-    'abu_bakr_al_shatri': 'Abu Bakr Al-Shatri',
-    'hani_rifai': 'Hani Ar-Rifai',
-    'mahmoud_khalil_al_husary': 'Mahmoud Khalil Al-Husary',
-    'muhammad_siddiq_al_minshawi': 'Muhammad Siddiq Al-Minshawi',
-    'muhammad_ayyub': 'Muhammad Ayyub',
-  };
-  
-  /// Get all surahs
-  Future<List<SurahInfo>> getAllSurahs() async {
-    // In a real app, this would fetch from an API or local database
-    await Future.delayed(const Duration(milliseconds: 500));
-    return _allSurahs;
+  Future<void> initialize() async {
+    await fetchSurahs();
+    loadFavorites();
   }
   
-  /// Get favorite surahs
-  Future<List<SurahInfo>> getFavoriteSurahs() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return _allSurahs.where((surah) => _favoriteSurahs.contains(surah.number)).toList();
-  }
-  
-  /// Toggle favorite status for a surah
-  Future<bool> toggleFavoriteSurah(int surahNumber) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    
-    if (_favoriteSurahs.contains(surahNumber)) {
-      _favoriteSurahs.remove(surahNumber);
-    } else {
-      _favoriteSurahs.add(surahNumber);
-    }
-    
-    return true;
-  }
-  
-  /// Check if a surah is favorited
-  bool isFavorite(int surahNumber) {
-    return _favoriteSurahs.contains(surahNumber);
-  }
-  
-  /// Get a specific surah by number
-  Future<SurahInfo?> getSurah(int number) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    
+  Future<void> fetchSurahs() async {
     try {
-      return _allSurahs.firstWhere((surah) => surah.number == number);
+      // In a real app, this would call an actual Quran API
+      // For now, we'll add some sample data
+      _surahs = [
+        {
+          'number': 1,
+          'name': 'سُورَةُ ٱلْفَاتِحَةِ',
+          'englishName': 'Al-Fatiha',
+          'englishNameTranslation': 'The Opening',
+          'numberOfAyahs': 7,
+          'revelationType': 'Meccan',
+        },
+        {
+          'number': 2,
+          'name': 'سُورَةُ البَقَرَةِ',
+          'englishName': 'Al-Baqarah',
+          'englishNameTranslation': 'The Cow',
+          'numberOfAyahs': 286,
+          'revelationType': 'Medinan',
+        },
+        {
+          'number': 3,
+          'name': 'سُورَةُ آلِ عِمۡرَانَ',
+          'englishName': 'Aal-Imran',
+          'englishNameTranslation': 'The Family of Imran',
+          'numberOfAyahs': 200,
+          'revelationType': 'Medinan',
+        },
+      ];
+      
+      notifyListeners();
     } catch (e) {
-      debugPrint('Error getting surah $number: $e');
-      return null;
+      print('Error fetching surahs: $e');
     }
   }
   
-  /// Get available reciters
-  List<String> getReciters() {
-    return _reciters.values.toList();
+  Future<void> loadFavorites() async {
+    // In a real app, this would load saved favorites from storage
+    _favorites = [
+      QuranSelection(
+        surahNumber: 1,
+        surahName: 'Al-Fatiha',
+        arabicName: 'سُورَةُ ٱلْفَاتِحَةِ',
+        verseStart: 1,
+        verseEnd: 7,
+        reciterName: 'Mishary Rashid Alafasy',
+      ),
+    ];
+    
+    notifyListeners();
   }
   
-  /// Get reciter ID by name
-  String? getReciterId(String reciterName) {
-    final entry = _reciters.entries.firstWhere(
-      (entry) => entry.value == reciterName,
-      orElse: () => const MapEntry('', ''),
-    );
-    
-    return entry.key.isNotEmpty ? entry.key : null;
+  Future<void> addToFavorites(QuranSelection selection) async {
+    _favorites = [..._favorites, selection];
+    // In a real app, this would save favorites to storage
+    notifyListeners();
   }
   
-  /// Get audio URL for a surah
-  String getSurahAudioUrl(int surahNumber, {String? reciter}) {
-    final reciterId = reciter ?? 'mishari_rashid_alafasy';
+  Future<void> removeFromFavorites(int surahNumber, int verseStart, int verseEnd) async {
+    _favorites = _favorites.where((selection) => 
+      !(selection.surahNumber == surahNumber && 
+        selection.verseStart == verseStart && 
+        selection.verseEnd == verseEnd)
+    ).toList();
     
-    // Format surah number with leading zeros
-    final formattedNumber = surahNumber.toString().padLeft(3, '0');
-    
-    // In a real implementation, this would point to actual audio files
-    return 'https://verses.quran.com/$reciterId/$formattedNumber.mp3';
+    // In a real app, this would update storage
+    notifyListeners();
   }
 }
-
-// Global instance
-final quranService = QuranService();

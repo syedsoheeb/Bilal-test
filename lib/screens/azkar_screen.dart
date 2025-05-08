@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../utils/app_theme.dart';
-import '../models/models.dart';
+import 'package:provider/provider.dart';
 import '../services/services.dart';
-import '../widgets/azkar_display_card.dart';
+import '../models/models.dart';
+import '../utils/app_styles.dart';
+import '../utils/app_theme.dart';
 
-/// Screen for displaying and scheduling Azkar (Islamic remembrances)
 class AzkarScreen extends StatefulWidget {
-  const AzkarScreen({super.key});
+  const AzkarScreen({Key? key}) : super(key: key);
 
   @override
   State<AzkarScreen> createState() => _AzkarScreenState();
@@ -14,166 +14,132 @@ class AzkarScreen extends StatefulWidget {
 
 class _AzkarScreenState extends State<AzkarScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  AzkarType _selectedType = azkarService.getCurrentAzkarType();
-  List<AzkarEntry> _azkarEntries = [];
-  bool _loading = false;
-
+  
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(_handleTabChange);
-    _loadAzkar();
   }
-
+  
   @override
   void dispose() {
-    _tabController.removeListener(_handleTabChange);
     _tabController.dispose();
     super.dispose();
   }
-
-  void _handleTabChange() {
-    if (_tabController.indexIsChanging) {
-      setState(() {
-        switch (_tabController.index) {
-          case 0:
-            _selectedType = AzkarType.morning;
-            break;
-          case 1:
-            _selectedType = AzkarType.evening;
-            break;
-          case 2:
-            _selectedType = AzkarType.ruqyah;
-            break;
-        }
-        _loadAzkar();
-      });
-    }
-  }
-
-  void _loadAzkar() {
-    setState(() {
-      _loading = true;
-    });
-    
-    // Load the appropriate azkar based on selected type
-    _azkarEntries = azkarService.getAzkar(_selectedType);
-    
-    setState(() {
-      _loading = false;
-    });
-  }
-
+  
   @override
   Widget build(BuildContext context) {
+    final azkarService = Provider.of<AzkarService>(context, listen: false);
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Azkar'),
-        centerTitle: false,
         bottom: TabBar(
           controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          indicatorColor: Colors.white,
           tabs: const [
             Tab(text: 'Morning'),
             Tab(text: 'Evening'),
-            Tab(text: 'Night'),
+            Tab(text: 'Daily'),
           ],
         ),
-        actions: [
-          // Schedule button
-          IconButton(
-            icon: const Icon(Icons.schedule),
-            onPressed: () {
-              _showScheduleDialog(context);
-            },
-            tooltip: 'Schedule Azkar',
-          ),
-        ],
       ),
       body: TabBarView(
         controller: _tabController,
         children: [
-          // Morning azkar
-          _buildAzkarList(AzkarType.morning),
-          
-          // Evening azkar
-          _buildAzkarList(AzkarType.evening),
-          
-          // Night ruqyah
-          _buildAzkarList(AzkarType.ruqyah),
+          _buildAzkarList(context, azkarService.getMorningAzkar()),
+          _buildAzkarList(context, azkarService.getEveningAzkar()),
+          _buildAzkarList(context, azkarService.getDailyAzkar()),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          _playRandomAzkar(context);
+          // Navigate to azkar schedule screen
         },
-        tooltip: 'Play Random Azkar',
-        child: const Icon(Icons.play_arrow),
+        icon: const Icon(Icons.schedule),
+        label: const Text('Schedule Azkar'),
       ),
     );
   }
-
-  Widget _buildAzkarList(AzkarType type) {
-    if (_loading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    if (_azkarEntries.isEmpty) {
-      return Center(
-        child: Text(
-          'No ${type.displayName} available',
-          style: AppTextStyles.bodyLarge,
-        ),
-      );
-    }
-
+  
+  Widget _buildAzkarList(BuildContext context, List<DhikrEntry> azkar) {
     return ListView.builder(
-      padding: AppPadding.screenPadding,
-      itemCount: _azkarEntries.length,
+      itemCount: azkar.length,
+      padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, index) {
-        final azkar = _azkarEntries[index];
-        return AzkarDisplayCard(
-          azkar: azkar,
-          azkarType: type,
-        );
-      },
-    );
-  }
-
-  void _playRandomAzkar(BuildContext context) {
-    // In a real implementation, this would get a device and play audio
-    final randomAzkar = azkarService.getRandomAzkar(_selectedType);
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Playing ${_selectedType.displayName}'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
-  void _showScheduleDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Schedule Azkar'),
-          content: const Text(
-            'In the schedule section, you can set up automatic azkar playback at specific times or after prayer times.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('OK'),
+        final dhikr = azkar[index];
+        return Card(
+          elevation: 2.0,
+          margin: const EdgeInsets.only(bottom: 16.0),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  dhikr.arabic,
+                  style: AppStyles.arabicStyle.copyWith(
+                    fontSize: 24.0,
+                    color: AppColors.primary,
+                  ),
+                  textAlign: TextAlign.right,
+                  textDirection: TextDirection.rtl,
+                ),
+                const SizedBox(height: 16.0),
+                Text(
+                  dhikr.transliteration,
+                  style: AppStyles.bodyStyle.copyWith(
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                Text(
+                  dhikr.translation,
+                  style: AppStyles.bodyStyle,
+                ),
+                const SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Source: ${dhikr.source}',
+                      style: AppStyles.captionStyle,
+                    ),
+                    Chip(
+                      label: Text('Repeat ${dhikr.count}x'),
+                      backgroundColor: AppColors.accent.withOpacity(0.2),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  'Benefit: ${dhikr.benefit}',
+                  style: AppStyles.captionStyle.copyWith(
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.play_arrow),
+                      label: const Text('Play Audio'),
+                      onPressed: () {
+                        // Play audio
+                      },
+                    ),
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.share),
+                      label: const Text('Share'),
+                      onPressed: () {
+                        // Share dhikr
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );

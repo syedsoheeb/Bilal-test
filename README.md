@@ -1,56 +1,50 @@
 # Bilal The Muezzin
 
-A comprehensive mobile application designed to enhance Islamic spiritual practice through innovative technology, connecting to smart speakers and providing prayer times, Quranic content, and dhikr reminders.
+A comprehensive Islamic prayer app that plays Azaan (call to prayer) on smart speakers including Google Home and Amazon Alexa devices.
 
 ## Features
 
-- 🕌 Prayer time calculation based on user location
-- 🔊 Connect to Google Cast and Amazon Alexa devices
-- 📖 Quran recitation scheduling
-- 📿 Morning and evening azkar reminders
-- 🌙 Islamic (Hijri) date display
-- 🔔 Prayer time notifications
-- 👥 Multiple speaker group management
-- 🎛️ Personalized sound profiles for azaan
+- Islamic prayer times based on your location
+- Beautiful Adhan (call to prayer) audio options
+- Schedule Azaan for different prayer times
+- Daily Dhikr and Azkar with Arabic text, transliteration, and translation
+- Quran surah selection for recitation
+- Multiple smart speaker support (Google Cast and Alexa)
+- Speaker group management for multiple devices
+- Customizable sound profiles
+- Morning and Evening Azkar routines
+- Nearby mosque finder
+- Hijri date display
 
-## Building the App
+## Getting Started
 
-### Local Build
-1. Make sure you have Flutter installed and set up.
-2. Clone this repository.
-3. Navigate to the project directory: `cd islamic_prayer_app`
-4. Get dependencies: `flutter pub get`
-5. Build the APK: `flutter build apk --release`
-6. The APK will be available at: `build/app/outputs/flutter-apk/app-release.apk`
+### Prerequisites
 
-### Using the Build Script
-1. Make the build script executable: `chmod +x ../build_android_apk.sh`
-2. Run the build script: `../build_android_apk.sh`
-3. Follow the instructions to download the APK.
+- Flutter (latest stable version)
+- Android SDK for Android builds
+- Optional: iOS development setup for iOS builds
 
-### Using Codemagic
-This project includes a `codemagic.yaml` configuration file for building with Codemagic CI/CD.
+### Installation
 
-## Development Notes
+1. Clone this repository
+2. Run `flutter pub get` to install dependencies
+3. Run `flutter run` to start the app in debug mode
 
-### Plugin Dependencies
-Some audio plugins have been temporarily removed to fix Android v1 embedding issues:
-```yaml
-# Audio plugins removed to fix Android v1 embedding issue
-# just_audio: ^0.9.35
-# audio_service: ^0.18.10
+### Building for Production
+
+To build the release version:
+
+```
+flutter build apk --release
 ```
 
-These will be re-integrated when we implement the actual audio functionality.
+## How It Works
 
-### Current Limitations
-- Audio playback to smart speakers is currently mocked
-- Actual Google Cast and Alexa SDK integration is pending
-- Notification functionality is implemented as placeholders
+The app connects to your Google Cast or Alexa devices on your local network and sends audio commands to play Adhan or Quran audio at scheduled times or on-demand.
 
-## License
-This project is licensed under the MIT License.
+## Technology
 
-## Credits
-- Islamic design elements: Various Islamic art and architecture sources
-- Prayer time calculations: Adapted from various Islamic prayer time calculation algorithms
+- Flutter for cross-platform mobile development
+- Google Cast SDK for Google Home integration
+- Alexa Voice Service for Amazon Echo integration
+- Prayer times calculation using standard methods
