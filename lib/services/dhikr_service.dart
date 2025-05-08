@@ -1,124 +1,129 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/models.dart';
 
-/// Service for providing daily dhikr (Islamic remembrances)
 class DhikrService {
-  // Collection of verified dhikr entries
-  final List<DhikrEntry> _dhikrEntries = [
-    DhikrEntry(
-      arabic: 'سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ الْعَظِيمِ',
-      transliteration: 'Subhan-Allahi wa bihamdihi, Subhan-Allahil-Adheem',
-      translation: 'Glory be to Allah and all praise is due to Him, Glory be to Allah the Magnificent',
-      reference: 'Al-Bukhari 7/168, Muslim 4/2092',
-      virtues: 'They are two phrases which are light on the tongue, heavy on the Scale, and beloved to the Most Merciful',
-      repetitions: 100,
-    ),
-    DhikrEntry(
-      arabic: 'لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ',
-      transliteration: 'La ilaha illallahu wahdahu la shareeka lah, lahul-mulku wa lahul-hamdu wa huwa 'ala kulli shay'in qadeer',
-      translation: 'None has the right to be worshipped but Allah alone, Who has no partner. His is the dominion and His is the praise, and He is Able to do all things',
-      reference: 'Al-Bukhari 4/95, Muslim 4/2071',
-      virtues: 'Whoever recites this ten times in the morning will have 100 rewards recorded, 100 sins wiped away, will be protected from Satan, and no sin will destroy him that day',
-      repetitions: 10,
-    ),
-    DhikrEntry(
-      arabic: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ',
-      transliteration: 'Allahumma salli 'ala Muhammadin wa 'ala ali Muhammadin kama sallayta 'ala Ibrahima wa 'ala ali Ibrahima innaka Hamidun Majid. Allahumma barik 'ala Muhammadin wa 'ala ali Muhammadin kama barakta 'ala Ibrahima wa 'ala ali Ibrahima innaka Hamidun Majid',
-      translation: 'O Allah, send prayers upon Muhammad and the family of Muhammad, as You sent prayers upon Ibrahim and the family of Ibrahim, You are indeed Worthy of Praise, Full of Glory. O Allah, send blessings upon Muhammad and the family of Muhammad, as You sent blessings upon Ibrahim and the family of Ibrahim, You are indeed Worthy of Praise, Full of Glory',
-      reference: 'Al-Bukhari 4/118-9',
-      virtues: 'The Prophet (ﷺ) said: "Whoever sends blessings upon me once, Allah will send blessings upon him tenfold."',
-      repetitions: 10,
-    ),
-    DhikrEntry(
-      arabic: 'أَسْتَغْفِرُ اللهَ وَأَتُوبُ إِلَيْهِ',
-      transliteration: 'Astaghfirullaha wa atubu ilayh',
-      translation: 'I seek the forgiveness of Allah and repent to Him',
-      reference: 'Al-Bukhari 7/145, Muslim 4/2078',
-      virtues: 'The Prophet (ﷺ) said: "By Allah, I seek the forgiveness of Allah and repent to Him more than seventy times each day."',
-      repetitions: 100,
-    ),
-    DhikrEntry(
-      arabic: 'سُبْحَانَ اللهِ، وَالْحَمْدُ للهِ، وَلاَ إِلَهَ إِلاَّ اللهُ، وَاللهُ أَكْبَرُ',
-      transliteration: 'Subhan-Allah, Walhamdu lillah, Wa la ilaha illallah, Wallahu Akbar',
-      translation: 'Glory is to Allah, and praise is to Allah, and there is none worthy of worship but Allah, and Allah is the Most Great',
-      reference: 'Muslim 4/2071',
-      virtues: 'The Prophet (ﷺ) said: "There are four phrases that are most beloved to Allah: Subhan-Allah, Alhamdu lillah, La ilaha illallah, and Allahu Akbar. It does not matter which of them you begin with."',
-      repetitions: 33,
-    ),
-    DhikrEntry(
-      arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ',
-      transliteration: "Subhan-Allahi wa bihamdihi, 'adada khalqihi, wa rida nafsihi, wa zinata 'arshihi, wa midada kalimatihi',
-      translation: 'Glory and praise is to Allah, as much as the number of His creation, as much as pleases Him, as much as the weight of His Throne, and as much as the ink of His words',
-      reference: 'Muslim 4/2090',
-      virtues: 'These words are heavy on the Scale and most beloved to Allah.',
-      repetitions: 3,
-    ),
-    DhikrEntry(
-      arabic: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ',
-      transliteration: 'La hawla wa la quwwata illa billah',
-      translation: 'There is no might nor power except with Allah',
-      reference: 'Al-Bukhari 7/158, Muslim 4/2076',
-      virtues: 'The Prophet (ﷺ) said: "This phrase is a treasure from the treasures of Paradise."',
-      repetitions: 10,
-    ),
-    DhikrEntry(
-      arabic: 'اللَّهُمَّ اغْفِرْ لِي، وَارْحَمْنِي، وَاهْدِنِي، وَعَافِنِي، وَارْزُقْنِي',
-      transliteration: 'Allahumma-ghfir li, warhamni, wahdini, wa 'afini, warzuqni',
-      translation: 'O Allah, forgive me, have mercy on me, guide me, give me good health, and provide for me',
-      reference: 'Muslim 4/2073',
-      virtues: 'These phrases combine all the good of this world and the Hereafter.',
-      repetitions: 3,
-    ),
-    DhikrEntry(
-      arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ',
-      transliteration: 'Allahumma inni as'alukal-'afwa wal'afiyah fid-dunya wal-akhirah',
-      translation: 'O Allah, I ask You for pardon and well-being in this life and the Hereafter',
-      reference: 'Ibn Majah 2/1273',
-      virtues: 'The Prophet (ﷺ) said: "There is nothing better to ask for after certainty of faith than well-being."',
-      repetitions: 3,
-    ),
-    DhikrEntry(
-      arabic: 'بِسْمِ اللهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الأَرْضِ وَلاَ فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ',
-      transliteration: "Bismillahil-ladhi la yadurru ma'asmihi shay'un fil-ardi wa la fis-sama', wa huwas-sami'ul-'alim',
-      translation: 'In the Name of Allah, with Whose Name nothing can harm on earth or in heaven, and He is the All-Hearing, the All-Knowing',
-      reference: 'Abu Dawud 4/323, At-Tirmidhi 5/465',
-      virtues: 'Whoever recites this three times in the morning and evening will not be harmed by anything.',
-      repetitions: 3,
-    ),
-  ];
+  // Morning Azkar
+  List<DhikrEntry> getMorningAzkar() {
+    return [
+      DhikrEntry(
+        id: 1,
+        arabic: 'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ',
+        translation: 'We have reached the morning and at this very time all sovereignty belongs to Allah, Lord of the worlds. All praise is for Allah. None has the right to be worshipped except Allah, alone, without partner, to Him belongs all sovereignty and praise and He is over all things omnipotent.',
+        transliteration: "Asbahna wa asbahal-mulku lillah, walhamdu lillah, la ilaha illallahu wahdahu la shareeka lah, lahul-mulku walahul-hamd, wahuwa ala kulli shayin qadeer.",
+        benefit: 'Remembrance of Allah's sovereignty and power in the morning',
+        source: 'Muslim',
+        count: 1,
+        category: 'morning',
+      ),
+      DhikrEntry(
+        id: 2,
+        arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',
+        translation: 'O Allah, You are my Lord, none has the right to be worshipped except You, You created me and I am Your servant and I abide to Your covenant and promise as best I can, I take refuge in You from the evil of which I have committed. I acknowledge Your favor upon me and I acknowledge my sin, so forgive me, for verily none can forgive sins except You.',
+        transliteration: "Allahumma anta rabbi la ilaha illa ant, khalaqtani wa ana abduk, wa ana ala ahdika wa wadika mastata't, a'udhu bika min sharri ma sana't, abu'u laka bini'matika alay, wa abu'u bidhanbi faghfir li fainnahu la yaghfirudh-dhunuba illa ant.",
+        benefit: 'Seeking forgiveness and acknowledging Allah's favor',
+        source: 'Bukhari',
+        count: 1,
+        category: 'morning',
+      ),
+      DhikrEntry(
+        id: 3,
+        arabic: 'اللَّهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيكَهُ، أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا أَنْتَ، أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَىٰ نَفْسِي سُوءًا، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ',
+        translation: 'O Allah, Knower of the unseen and the seen, Creator of the heavens and the Earth, Lord and Sovereign of all things, I bear witness that none has the right to be worshipped except You. I take refuge in You from the evil of my soul and from the evil and shirk of the devil, and from committing wrong against my soul or bringing such upon another Muslim.',
+        transliteration: "Allahumma alimat-ghaybi wash-shahadah, fatiras-samawati wal-ard, rabba kulli shayin wa malikah, ashhadu an la ilaha illa ant, a'udhu bika min sharri nafsi, wa min sharrish-shaytani wa shirkih, wa an aqtarifa ala nafsi su'an, aw ajurrahu ila muslim.",
+        benefit: 'Seeking refuge from evil and shirk',
+        source: 'Abu Dawud and At-Tirmidhi',
+        count: 1,
+        category: 'morning',
+      ),
+    ];
+  }
 
-  // Last returned dhikr to avoid immediate repetition
-  int _lastIndex = -1;
+  // Evening Azkar
+  List<DhikrEntry> getEveningAzkar() {
+    return [
+      DhikrEntry(
+        id: 4,
+        arabic: 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ',
+        translation: 'I take refuge in Allah's perfect words from the evil that He has created.',
+        transliteration: "A'udhu bikalimatil-lahit-tammati min sharri ma khalaq.",
+        benefit: 'Protection from all evil',
+        source: 'Muslim',
+        count: 3,
+        category: 'evening',
+      ),
+      DhikrEntry(
+        id: 5,
+        arabic: 'بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ، وَهُوَ السَّمِيعُ الْعَلِيمُ',
+        translation: 'In the name of Allah with whose name nothing is harmed on earth nor in the heavens and He is The All-Hearing, The All-Knowing.',
+        transliteration: "Bismil-lahil-ladhi la yadurru ma'as-mihi shayun fil-ardi wa la fis-sama'i, wa huwas-sami'ul-alim.",
+        benefit: 'Protection from all harm',
+        source: 'Abu Dawud and At-Tirmidhi',
+        count: 3,
+        category: 'evening',
+      ),
+    ];
+  }
 
-  /// Gets the daily dhikr
-  /// Returns a random dhikr entry from the collection
-  DhikrEntry getDailyDhikr() {
-    // Generate a random index different from the last one
-    int randomIndex;
-    do {
-      randomIndex = DateTime.now().millisecondsSinceEpoch % _dhikrEntries.length;
-    } while (_dhikrEntries.length > 1 && randomIndex == _lastIndex);
+  // Daily Dhikr
+  List<DhikrEntry> getDailyDhikr() {
+    return [
+      DhikrEntry(
+        id: 6,
+        arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ',
+        translation: 'Glory is to Allah and praise is to Him, Glory is to Allah the Almighty.',
+        transliteration: "Subhan-Allahi wa bihamdihi, Subhan-Allahil-Adheem.",
+        benefit: 'A tree is planted in Paradise for the one who says this',
+        source: 'Muslim',
+        count: 100,
+        category: 'daily',
+      ),
+      DhikrEntry(
+        id: 7,
+        arabic: 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ، بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ، قُلْ أَعُوذُ بِرَبِّ النَّاسِ، مَلِكِ النَّاسِ، إِلَٰهِ النَّاسِ، مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ، الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ، مِنَ الْجِنَّةِ وَالنَّاسِ',
+        translation: 'I seek refuge with Allah from Satan the accursed. In the name of Allah, the Most Gracious, the Most Merciful. Say: I seek refuge with the Lord of mankind, the King of mankind, the God of mankind, from the evil of the whisperer who withdraws, who whispers in the breasts of mankind, from among the jinn and mankind.',
+        transliteration: "Bismillahir-rahmanir-rahim. Qul a'udhu birabbin-nas. Malikin-nas. Ilahin-nas. Min sharril-waswaasil-khannas. Alladhi yuwaswisu fi sudurin-nas. Minal-jinnati wan-nas.",
+        benefit: 'Protection from evil whispers',
+        source: 'Quran 114',
+        count: 3,
+        category: 'daily',
+      ),
+      DhikrEntry(
+        id: 8,
+        arabic: 'آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ، كُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِنْ رُسُلِهِ، وَقَالُوا سَمِعْنَا وَأَطَعْنَا، غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ، لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا، لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ، رَبَّنَا لَا تُؤَاخِذْنَا إِنْ نَسِينَا أَوْ أَخْطَأْنَا، رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِنْ قَبْلِنَا، رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ، وَاعْفُ عَنَّا، وَاغْفِرْ لَنَا، وَارْحَمْنَا، أَنْتَ مَوْلَانَا فَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ',
+        translation: 'The Messenger has believed in what was revealed to him from his Lord, and so have the believers. All of them have believed in Allah and His angels and His books and His messengers, saying, "We make no distinction between any of His messengers." And they say, "We hear and we obey. We seek Your forgiveness, our Lord, and to You is the final destination." Allah does not charge a soul except with that within its capacity. It will have the consequence of what good it has gained, and it will bear the consequence of what evil it has earned. "Our Lord, do not impose blame upon us if we have forgotten or erred. Our Lord, and lay not upon us a burden like that which You laid upon those before us. Our Lord, and burden us not with that which we have no ability to bear. And pardon us; and forgive us; and have mercy upon us. You are our protector, so give us victory over the disbelieving people."',
+        transliteration: "Amanar-rasulu bima unzila ilayhi mir-rabbihi wal-mu'minun. Kullun amana billahi wa mala'ikatihi wa kutubihi wa rusulihi la nufarriqu bayna ahadin mir-rusulihi wa qalu sami'na wa ata'na ghufranaka rabbana wa ilaykal-masir. La yukallifu-llahu nafsan illa wus'aha. Laha ma kasabat wa alayha mak-tasabat. Rabbana la tu'akhidhna in nasina aw akhta'na. Rabbana wa la tahmil alayna isran kama hamaltahu alal-ladhina min qablina. Rabbana wa la tuhammilna ma la taqata lana bihi wa'fu anna, waghfir lana, warhamna. Anta mawlana fansurna alal-qawmil-kafirin.",
+        benefit: 'Seeking forgiveness and mercy from Allah',
+        source: 'Quran 2:285-286',
+        count: 1,
+        category: 'daily',
+      ),
+      DhikrEntry(
+        id: 9,
+        arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ',
+        translation: 'O Allah, I take refuge in You from anxiety and sorrow, weakness and laziness, miserliness and cowardice, the burden of debts and from being overpowered by men.',
+        transliteration: "Allahumma inni a'udhu bika minal-hammi wal-hazan, wal-'ajzi wal-kasal, wal-bukhli wal-jubn, wa dala'id-dayni wa ghalabatir-rijal.",
+        benefit: 'Seeking refuge from negative feelings and situations',
+        source: 'Bukhari',
+        count: 1,
+        category: 'daily',
+      ),
+    ];
+  }
+
+  // Get a random dhikr from a specific category
+  DhikrEntry getRandomDhikr({String category = 'daily'}) {
+    List<DhikrEntry> dhikrList = [];
     
-    _lastIndex = randomIndex;
-    return _dhikrEntries[randomIndex];
-  }
-
-  /// Gets a specific dhikr by index
-  DhikrEntry getDhikrByIndex(int index) {
-    if (index < 0 || index >= _dhikrEntries.length) {
-      return _dhikrEntries[0]; // Default to first if out of range
+    if (category == 'morning') {
+      dhikrList = getMorningAzkar();
+    } else if (category == 'evening') {
+      dhikrList = getEveningAzkar();
+    } else {
+      dhikrList = getDailyDhikr();
     }
-    return _dhikrEntries[index];
+    
+    final random = Random();
+    return dhikrList[random.nextInt(dhikrList.length)];
   }
-
-  /// Gets all available dhikr entries
-  List<DhikrEntry> getAllDhikr() {
-    return List.from(_dhikrEntries);
-  }
-  
-  /// Gets the number of available dhikr entries
-  int get count => _dhikrEntries.length;
 }
-
-// Global instance
-final dhikrService = DhikrService();
